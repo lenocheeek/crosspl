@@ -1,4 +1,3 @@
-import sys
 import struct
 import argparse
 
@@ -16,24 +15,15 @@ INSTRUCTIONS = {
 # Разбор строки ассемблера
 # ==============================
 def assemble_line(line):
-    """
-    Преобразует строку ассемблера в промежуточное представление.
-    Формат промежуточного представления: {"A": int, "B": int or None}
-    """
-    # Игнорируем пустые строки и комментарии
     parts = line.strip().split()
     if not parts or parts[0].startswith(";"):
         return None
-
     mnemonic = parts[0].upper()
     if mnemonic not in INSTRUCTIONS:
         raise ValueError(f"Неизвестная команда: {mnemonic}")
-
     instr = INSTRUCTIONS[mnemonic]
-    
-    # Проверяем наличие операнда
     operand = None
-    if instr["B_bits"]:  # Если команда требует операнд
+    if instr["B_bits"]:
         if len(parts) < 2:
             raise ValueError(f"Команда {mnemonic} требует операнд")
         operand = int(parts[1])
@@ -43,27 +33,18 @@ def assemble_line(line):
 # Преобразование в машинный код
 # ==============================
 def intermediate_to_binary(intermediate):
-    """
-    Преобразует промежуточное представление в машинный код (4 байта на команду)
-    """
     binary_code = bytearray()
     for instr in intermediate:
         A = instr["A"]
         B = instr["B"] or 0
-        # Составляем 32-битное слово: A в младших 6 битах, B в старших битах
         word = (B << 6) | A
-        binary_code += struct.pack("<I", word)  # little-endian
+        binary_code += struct.pack("<I", word)
     return binary_code
 
 # ==============================
-# Основная сборка файла
+# Ассемблирование файла
 # ==============================
 def assemble_file(input_path, output_path, test_mode=False):
-    """
-    Ассемблирует текстовый файл в бинарный.
-    В режиме test_mode выводит промежуточное представление и hex-код.
-    """
-    # Чтение исходного файла и формирование промежуточного представления
     intermediate = []
     with open(input_path, "r") as f:
         for line in f:
@@ -76,10 +57,8 @@ def assemble_file(input_path, output_path, test_mode=False):
         for i, instr in enumerate(intermediate):
             print(f"{i}: {instr}")
 
-    # Преобразование в машинный код
     binary_code = intermediate_to_binary(intermediate)
 
-    # Сохранение в бинарный файл
     with open(output_path, "wb") as f:
         f.write(binary_code)
 
@@ -95,7 +74,7 @@ def assemble_file(input_path, output_path, test_mode=False):
 # CLI
 # ==============================
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Ассемблер для УВМ (Этап 1)")
+    parser = argparse.ArgumentParser(description="Ассемблер для УВМ (Этап 2)")
     parser.add_argument("input", help="Путь к исходному файлу asm")
     parser.add_argument("output", help="Путь к бинарному файлу")
     parser.add_argument("--test", action="store_true", help="Режим тестирования")
