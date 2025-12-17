@@ -11,15 +11,13 @@
 ---
 
 ## **Содержание репозитория**
-assembler_itog/
-├─ assembler.py # Ассемблер для УВМ
-├─ interpreter.py # Интерпретатор УВМ
-├─ uvm_gui.py # Кроссплатформенный GUI для Mac/Windows/Linux
-├─ examples/ # Тестовые программы на ассемблере
-│ ├─ vector_bitreverse.asm
-│ ├─ vector_bitreverse_2.asm
-│ └─ vector_bitreverse_3.asm
-├─ README.md
+- assembler.py # Ассемблер для УВМ
+-  interpreter.py # Интерпретатор УВМ
+-   vm_gui.py # Кроссплатформенный GUI для Mac/Windows/Linux
+- vector_bitreverse.asm #Тестовые программы на ассемблере
+- vector_bitreverse_2.asm #Тестовые программы на ассемблере
+- vector_bitreverse_3.asm #Тестовые программы на ассемблере
+- README.md
 
 ## **Этапы работы**
 
@@ -353,4 +351,5 @@ pyinstaller --name UVM_GUI --onefile --windowed uvm_gui.py
 - Интерпретатор использует стековую модель, память инициализируется нулями.
 - BITREVERSE работает на 32-битных значениях.
 - GUI кроссплатформенный и может быть собран на Mac, Windows и Linux.
+
 
